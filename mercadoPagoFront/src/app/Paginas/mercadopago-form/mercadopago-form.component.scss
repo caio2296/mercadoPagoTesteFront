@@ -1,0 +1,20 @@
+#paymentBrick_container {
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    opacity: 1;
+    visibility: visible;
+}
+
+#paymentBrick_container.hidden {
+    opacity: 0;
+    visibility: hidden;
+
+}
+
+#statusScreenBrick_container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+#statusScreenBrick_container.visible {
+    opacity: 1;
+}
