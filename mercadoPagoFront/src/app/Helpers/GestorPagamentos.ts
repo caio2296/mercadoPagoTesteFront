@@ -8,8 +8,8 @@ export class GestorPagamentos{
             // pix
             dadosDoPagador = {
               email: dadosFormulario.payer.email,
-              firstName: 'Caio', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
-              lastName: 'Cesar', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
+              firstName: 'Jackson', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
+              lastName: 'Lourenco', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
               identification: {
                 type: '',
                 number: ''
