@@ -1,0 +1,15 @@
+<h2>Selecione um cartão salvo</h2>
+
+<form id="form-checkout">
+  <label for="form-checkout__cardId">Cartões Salvos:</label>
+  <select id="form-checkout__cardId" *ngIf="cartoes.length > 0">
+    <option *ngFor="let cartao of cartoes" [value]="cartao.id">
+      {{ cartao.payment_method.name }} - Final {{ cartao.last_four_digits }}
+    </option>
+  </select>
+
+  <div id="form-checkout__securityCode-container" class="container"></div>
+
+  <input type="hidden" name="token" id="token">
+  <button type="submit">Pagar</button>
+</form>

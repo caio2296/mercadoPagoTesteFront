@@ -20,6 +20,7 @@ static async pagamentoPix(formData:any): Promise<any>{
   }
 
 static async pagamentoCartao(preferenceData: any,formData:any,payerData:any): Promise<any>{
+
         let paymentResult;
         let paymentResponse = await fetch("https://localhost:44318/api/ProcessarPagamentoCartao", {
           method: "POST",
@@ -27,8 +28,8 @@ static async pagamentoCartao(preferenceData: any,formData:any,payerData:any): Pr
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: formData.token,
-            description: "Produto Exemplo",
+            token: formData.token,//card_token
+            description: "Assinatura do Auto Registro",
             issuer_id: formData.issuer_id,
             paymentmethodid: formData.payment_method_id,
             TransactionAmount: formData.transaction_amount,
@@ -42,6 +43,10 @@ static async pagamentoCartao(preferenceData: any,formData:any,payerData:any): Pr
         });
       paymentResult = await paymentResponse.json();
       console.log('Pagamento processado com sucesso!', paymentResult);
+
+    
+
+   
       return paymentResult; // Finaliza a Promise com o resultado do pagamento
       }
 
@@ -63,6 +68,7 @@ static async SelecionarMetodoPagamento(dadosFormulario: any, dadosPreferenceDoPa
           default:
             // Agora, chama o endpoint de processar pagamento de cartão
             var pagamento = await MetodosPagamento.pagamentoCartao(dadosPreferenceDoPagamento, dadosFormulario, dadosDoPagador);
+            console.log("token:",pagamento.token);
             CheckoutMercadoPago.inicializeStatusScreenBrick(pagamento);
 
             break;

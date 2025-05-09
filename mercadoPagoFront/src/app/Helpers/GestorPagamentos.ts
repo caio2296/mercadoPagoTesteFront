@@ -8,8 +8,8 @@ export class GestorPagamentos{
             // pix
             dadosDoPagador = {
               email: dadosFormulario.payer.email,
-              firstName: 'Jackson', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
-              lastName: 'Lourenco', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
+              firstName: 'Caio', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
+              lastName: 'Cesar', //o fomulário não possui esse campo, necessário inserir utilizando um model externo
               identification: {
                 type: '',
                 number: ''
@@ -55,7 +55,7 @@ export class GestorPagamentos{
          const preferencePagamentoResponse = await this.ObterPreferenciaPagamento(dadosDoPagador);
      
          const dadosPreferenceDoPagamento = await preferencePagamentoResponse.json();
-     
+
          await MetodosPagamento.SelecionarMetodoPagamento(dadosFormulario, dadosPreferenceDoPagamento, dadosDoPagador);
       }   
 
