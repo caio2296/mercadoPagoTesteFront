@@ -1,5 +1,48 @@
 <p>mercadopago-form works!</p>
+<script src="https://www.mercadopago.com/v2/security.js" view="mercadoPago"></script>
+
 
 <div id="paymentBrick_container" style="width: 100%; max-width: 600px; margin: 0 auto;"></div>
+
+<form id="form-checkout" method="POST" action="/process_payment">
+   <select type="text" id="form-checkout__cardId"></select>
+   <div id="form-checkout__securityCode-container" class="container"></div>
+   <input name="token" id="token" hidden>
+   <button>Enviar</button>
+ </form>
+ 
+<a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c93808493dee0900193fe07b5d40d33" name="MP-payButton" class='blue-ar-l-rn-none'>Suscribirme</a>
+<script type="text/javascript">
+   (function() {
+      function $MPC_load() {
+         window.$MPC_loaded !== true && (function() {
+         var s = document.createElement("script");
+         s.type = "text/javascript";
+         s.async = true;
+         s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+         var x = document.getElementsByTagName('script')[0];
+         x.parentNode.insertBefore(s, x);
+         window.$MPC_loaded = true;
+      })();
+   }
+   window.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
+   })();
+  /*
+        // to receive event with message when closing modal from congrants back to site
+        function $MPC_message(event) {
+          // onclose modal ->CALLBACK FUNCTION
+         // !!!!!!!!FUNCTION_CALLBACK HERE Received message: {event.data} preapproval_id !!!!!!!!
+        }
+        window.$MPC_loaded !== true ? (window.addEventListener("message", $MPC_message)) : null; 
+        */
+</script>
+
+<input type="hidden" id="deviceId">
+<script>
+    document.getElementById('deviceId').value = window.MP_DEVICE_SESSION_ID;
+    console.log(window.MP_DEVICE_SESSION_ID);
+</script>
+
 <div id="statusScreenBrick_container"></div>
+
 

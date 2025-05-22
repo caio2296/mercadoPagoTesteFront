@@ -1,4 +1,5 @@
 import { GestorPagamentos } from '../Helpers/GestorPagamentos';
+import { MercadopagoFormComponent } from '../Paginas/mercadopago-form/mercadopago-form.component';
 
 declare var MercadoPago: any;
 declare global {
@@ -12,8 +13,10 @@ declare global {
 export class CheckoutMercadoPago{
 
     static initializeMercadoPagoBrick() {
+      
         // Inicializa o SDK do Mercado Pago com a sua public key
-        const mp = new MercadoPago('TEST-14aef55c-f356-4e78-8f30-686b99b4f0a8', {
+        //teste: TEST-14aef55c-f356-4e78-8f30-686b99b4f0a8
+        const mp = new MercadoPago('APP_USR-14fb8e46-7c2b-4e1a-a935-05dda7abd7c0', {
           locale: 'pt' // Define o idioma como português
         });
     
@@ -24,11 +27,11 @@ export class CheckoutMercadoPago{
         const renderPaymentBrick = async (bricksBuilder: any) => {
           const settings = {
             initialization: {
-              amount: 10000, // Valor total
+              amount: 10, // Valor total
               preferenceId: "<PREFERENCE_ID>", // ID da preferência gerado no back-end
               payer: {
-                firstName: "", // Nome do comprador (será enviado pelo frontend)
-                lastName: "",  // Sobrenome do comprador (será enviado pelo frontend)
+                firstName: "Jackson", // Nome do comprador (será enviado pelo frontend)
+                lastName: "Loourenco",  // Sobrenome do comprador (será enviado pelo frontend)
                 email: "" // Email do comprador (será enviado pelo frontend)
               }
             },
@@ -57,11 +60,62 @@ export class CheckoutMercadoPago{
     
                 // Construindo o objeto do pagador
                 let dadosDoPagador: any = GestorPagamentos.CriarPagador(dadosFormulario);  
-    
+    console.log("dados formulario", dadosFormulario);
+    console.log("dados pagado:",dadosDoPagador);
                 try {
-    
-                  await GestorPagamentos.ProcessarPagamento(dadosDoPagador, dadosFormulario);
+     // Após o pagamento, criar assinatura
+                  //const assinaturaResponse
+                 
+                  // await GestorPagamentos.ProcessarPagamento(dadosDoPagador, dadosFormulario);
                   
+                                  await fetch('https://localhost:44318/api/criar-assinatura', {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      "X-meli-session-id": MercadopagoFormComponent.checkDeviceId()
+                    },
+                    body: JSON.stringify({
+                      preapproval_plan_id: "2c93808493dee0900193fe07b5d40d33",
+                      token: dadosFormulario.token,
+                      email: dadosFormulario.payer.email,
+                      identificationType: dadosFormulario.payer.identification.type,
+                      identificationNumber: dadosFormulario.payer.identification.number,
+                      back_url: 'https://seusite.com/sucesso-assinatura'
+                    }),
+                  })
+                  .then(res => {
+                      if (!res.ok) throw new Error('Erro ao criar assinatura');
+                      return res.json();
+                    })
+                    .then(data => {
+                      console.log('Sucesso:', data);
+                      console.log('Sucesso no init_point:', data.init_point);
+                      alert('Assinatura iniciada com sucesso. Você será redirecionado para confirmação no Mercado Pago.');
+                      
+                      window.location.href = data.init_point;
+                      // redirecionar ou notificar sucesso
+                    })
+                    .catch(err => {
+                      console.error('Erro:', err);
+                      // notificar erro
+                    });;
+
+                  // await fetch('https://localhost:44318/api/CriarCliente', {
+                  //     method: "POST",
+                  //     headers: {
+                  //       "Content-Type": "application/json",
+                  //       "X-meli-session-id": MercadopagoFormComponent.checkDeviceId()
+                  //     },
+                  //     body: JSON.stringify({
+                  //       preapproval_plan_id: "2c93808493dee0900193fe07b5d40d33",
+                  //       token: dadosFormulario.token,
+                  //       email: dadosFormulario.payer.email,
+                  //       identificationType: dadosFormulario.payer.identification.type,
+                  //       identificationNumber: dadosFormulario.payer.identification.number,
+                  //       back_url: 'https://seusite.com/sucesso-assinatura'
+                  //     }),
+                  //   });
+                  console.log("cardData form:",dadosFormulario);
                 } catch (error) {
     
                   throw error; // Rejeita a Promise em caso de erro
@@ -90,7 +144,7 @@ export class CheckoutMercadoPago{
       }
 
    static async inicializeStatusScreenBrick(id_Pagamento:any){
-        const mp = new MercadoPago('TEST-14aef55c-f356-4e78-8f30-686b99b4f0a8', {
+        const mp = new MercadoPago('APP_USR-14fb8e46-7c2b-4e1a-a935-05dda7abd7c0', {
           locale: 'pt' // Define o idioma como português
         });
         console.log("id: ", id_Pagamento);
