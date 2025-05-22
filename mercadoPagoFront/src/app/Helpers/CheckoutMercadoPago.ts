@@ -82,7 +82,23 @@ export class CheckoutMercadoPago{
                       identificationNumber: dadosFormulario.payer.identification.number,
                       back_url: 'https://seusite.com/sucesso-assinatura'
                     }),
-                  });
+                  })
+                  .then(res => {
+                      if (!res.ok) throw new Error('Erro ao criar assinatura');
+                      return res.json();
+                    })
+                    .then(data => {
+                      console.log('Sucesso:', data);
+                      console.log('Sucesso no init_point:', data.init_point);
+                      alert('Assinatura iniciada com sucesso. Você será redirecionado para confirmação no Mercado Pago.');
+                      
+                      window.location.href = data.init_point;
+                      // redirecionar ou notificar sucesso
+                    })
+                    .catch(err => {
+                      console.error('Erro:', err);
+                      // notificar erro
+                    });;
 
                   // await fetch('https://localhost:44318/api/CriarCliente', {
                   //     method: "POST",
